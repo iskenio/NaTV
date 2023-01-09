@@ -1,11 +1,10 @@
 package kg.megacom.natv.services.impl;
 
+import kg.megacom.natv.exceptions.SaveTroubleException;
 import kg.megacom.natv.mappers.OrdersMapper;
 import kg.megacom.natv.models.dtos.DaysDto;
 import kg.megacom.natv.models.dtos.OrderDetailDto;
 import kg.megacom.natv.models.dtos.OrdersDto;
-import kg.megacom.natv.models.entities.Channels;
-import kg.megacom.natv.models.enums.OrderStatus;
 import kg.megacom.natv.models.requests.ChannelReq;
 import kg.megacom.natv.models.requests.OrderReq;
 import kg.megacom.natv.models.responces.OrderChannelResponse;
@@ -15,7 +14,8 @@ import kg.megacom.natv.services.ChannelsService;
 import kg.megacom.natv.services.DaysService;
 import kg.megacom.natv.services.OrderDetailService;
 import kg.megacom.natv.services.OrdersService;
-import org.hibernate.criterion.Order;
+import kg.megacom.natv.utils.ResourceBundle;
+import kg.megacom.natv.utils.models.Language;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +51,10 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public OrdersDto saveOrder(OrderReq orderRequest, int lang) {
+
+        if(orderRequest.getText().isEmpty()){
+            throw new SaveTroubleException(ResourceBundle.periodMessages(Language.getLang(lang),"textEmpExc"));
+        }
         OrdersDto dto = new OrdersDto();
         OrderResponse orderResponse = getOrder(orderRequest, lang);
         OrdersDto orderDto;

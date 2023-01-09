@@ -9,7 +9,7 @@ import lombok.Data;
 @Builder
 public class ResponseException {
     private String message;
-    private Object data;
+    //private Object data;
 
 
     public static ResponseException getResponse(String message, Language language) {
@@ -25,10 +25,9 @@ public class ResponseException {
                 .build();
     }
 
-    public static ResponseException getResponseWithBody(String message, Object data) {
+    public static ResponseException getResponseWithBody(String message) {
         return ResponseException.builder()
                 .message(message)
-                .data(data)
                 .build();
     }
 }

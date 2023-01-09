@@ -58,9 +58,9 @@ public class ChannelsController {
 
     @GetMapping("get/allResponse")
     @ApiOperation("Вывести все каналы")
-    public ResponseEntity<?> findAllResponse(){
+    public ResponseEntity<?> findAllResponse(int page, int size){
 
-            return ResponseEntity.ok(service.channelRes());
+            return ResponseEntity.ok(service.channelRes(page, size));
 
     }
 }

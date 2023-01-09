@@ -49,7 +49,7 @@ public class OrdersController {
 
     @PostMapping("set/order")
     @ApiOperation("заполнить заявку")
-    public ResponseEntity<?>saveOrder(OrderReq orderRequest, int lang) {
+    public ResponseEntity<?>saveOrder(@RequestBody OrderReq orderRequest, int lang) {
             return ResponseEntity.ok(service.saveOrder(orderRequest, lang));
     }
 

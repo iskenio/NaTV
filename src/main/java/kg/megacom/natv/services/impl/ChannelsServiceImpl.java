@@ -52,14 +52,14 @@ public class ChannelsServiceImpl implements ChannelsService {
     }
 
     @Override
-    public List<ChannelResponse> channelResponse(){
-        List<ChannelResponse> channelResponses = repository.channelResponse();
+    public List<ChannelResponse> channelResponse(int page, int size){
+        List<ChannelResponse> channelResponses = repository.channelResponse(page, size);
         return channelResponses;
     }
 
     @Override
-    public List<ChannelRes> channelRes() {
-        List<ChannelResponse> channelResponseList = channelResponse();
+    public List<ChannelRes> channelRes(int page, int size) {
+        List<ChannelResponse> channelResponseList = channelResponse(page - 1, size);
         List<ChannelRes> channelResList = new ArrayList<>();
         for (ChannelResponse item: channelResponseList){
             ChannelRes channelResp = new ChannelRes();
