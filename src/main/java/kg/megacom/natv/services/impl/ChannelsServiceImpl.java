@@ -33,10 +33,9 @@ public class ChannelsServiceImpl implements ChannelsService {
 
     @Override
     public ChannelsDto save(ChannelsDto channelsDto) throws SaveTroubleException{
-        if (channelsDto.getPhoto().isEmpty() || channelsDto.getName().isEmpty())
-            throw new SaveTroubleException("Поля не могут быть пустымы");
-        if (repository.existByOrderNum(channelsDto.getOrderNum()))
-            throw new SaveTroubleException("Такой номер заявки уже есть");
+
+//        if (repository.existByOrderNum(channelsDto.getOrderNum()))
+//            throw new SaveTroubleException("Такой номер заявки уже есть");
         return mapper.toDto(repository.save(mapper.toEntity(channelsDto)));
     }
 
@@ -74,11 +73,14 @@ public class ChannelsServiceImpl implements ChannelsService {
     }
 
     @Override
-    public ChannelsDto saveChannel(String name, MultipartFile photo, int orderNum) {
+    public ChannelsDto saveChannel(String name, MultipartFile photo, int orderNum, int lang) {
         ChannelsDto channelsDto = new ChannelsDto();
         channelsDto.setName(name);
         channelsDto.setPhoto(feignFileService.storeFile(photo).getDownloadUri());
         channelsDto.setOrderNum(orderNum);
+        if (repository.existByOrderNum(channelsDto.getOrderNum()))
+            throw new SaveTroubleException(ResourceBundle.periodMessages(Language.getLang(lang), "orderNumEx"));
+
         ChannelsDto dto = save(channelsDto);
         return dto;
     }

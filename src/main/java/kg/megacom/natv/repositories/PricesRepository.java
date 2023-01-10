@@ -13,4 +13,6 @@ import java.math.BigDecimal;
 public interface PricesRepository extends JpaRepository<Prices, Long> {
     @Query(value = "select price from tb_price where channel_id = ?1", nativeQuery = true)
     BigDecimal getChannelPrice(Long channelId);
+
+
 }

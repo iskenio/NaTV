@@ -14,3 +14,4 @@ public interface DiscountsRepository extends JpaRepository<Discounts, Long> {
     List<DiscountMinDaysResponse> getDiscountChannels(Long channelId);
 
 }
+

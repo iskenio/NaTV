@@ -11,6 +11,10 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderResponse {
+    String text;
+    String name;
+    String phone;
+    String email;
     @JsonProperty(value = "total_price")
     BigDecimal totalPrice;
     @JsonProperty(value = "discount_price")

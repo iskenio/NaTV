@@ -9,6 +9,7 @@ import kg.megacom.natv.models.requests.ChannelReq;
 import kg.megacom.natv.models.requests.OrderReq;
 import kg.megacom.natv.models.responces.OrderChannelResponse;
 import kg.megacom.natv.models.responces.OrderResponse;
+import kg.megacom.natv.models.responces.orders.OrdersResponse;
 import kg.megacom.natv.repositories.OrdersRepository;
 import kg.megacom.natv.services.ChannelsService;
 import kg.megacom.natv.services.DaysService;
@@ -50,7 +51,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public OrdersDto saveOrder(OrderReq orderRequest, int lang) {
+    public OrderResponse saveOrder(OrderReq orderRequest, int lang) throws SaveTroubleException{
 
         if(orderRequest.getText().isEmpty()){
             throw new SaveTroubleException(ResourceBundle.periodMessages(Language.getLang(lang),"textEmpExc"));
@@ -67,7 +68,16 @@ public class OrdersServiceImpl implements OrdersService {
         orderDto = save(dto);
         orderChannelRequest(orderRequest.getChannels(), orderDto.getId(), lang, dto.getText());
 
-        return orderDto;
+        OrderResponse getResponse = new OrderResponse();
+        getResponse.setText(orderDto.getText());
+        getResponse.setName(orderDto.getName());
+        getResponse.setPhone(orderDto.getPhone());
+        getResponse.setEmail(orderDto.getEmail());
+        getResponse.setTotalPrice(orderDto.getTotalPrice());
+        getResponse.setPriceDiscount(orderDto.getPriceDiscount());
+        getResponse.setChannels(orderChannelRequest(orderRequest.getChannels(), orderDto.getId(), lang, dto.getText()));
+
+        return getResponse;
     }
 
     @Override
@@ -93,7 +103,7 @@ public class OrdersServiceImpl implements OrdersService {
 
 
     @Override
-    public void orderChannelRequest(List<ChannelReq> channelReqList, Long orderID, int lang, String text) {
+    public List<OrderChannelResponse> orderChannelRequest(List<ChannelReq> channelReqList, Long orderID, int lang, String text) {
         List<OrderChannelResponse> channelResponses = orderDetailService.getOrderChannelResponse(channelReqList, lang, text);
         Map<Long, BigDecimal> discountPrice = new HashMap<>();
         for (var item : channelResponses) {
@@ -108,7 +118,7 @@ public class OrdersServiceImpl implements OrdersService {
                     .id(orderID)
                     .build()
             );
-            //OrderDetailDto dtoSave = save(dto);
+
             for (Date days : item.getDays()) {
                 DaysDto daysDto = new DaysDto();
                 daysDto.setOrderDetailId(orderDetailDto);
@@ -117,6 +127,7 @@ public class OrdersServiceImpl implements OrdersService {
             }
             orderDetailService.save(orderDetailDto);
         }
+        return channelResponses;
     }
 
 }

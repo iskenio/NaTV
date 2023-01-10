@@ -10,5 +10,5 @@ import java.util.List;
 public interface ChannelsService extends BaseService<ChannelsDto>{
     List<ChannelResponse> channelResponse(int page, int size);
     List<ChannelRes> channelRes(int page, int size);
-    ChannelsDto saveChannel(String name, MultipartFile photo, int orderNum);
+    ChannelsDto saveChannel(String name, MultipartFile photo, int orderNum, int lang);
 }

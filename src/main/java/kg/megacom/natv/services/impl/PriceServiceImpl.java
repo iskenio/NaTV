@@ -1,9 +1,12 @@
 package kg.megacom.natv.services.impl;
 
+import kg.megacom.natv.exceptions.EntityNotFoundExc;
 import kg.megacom.natv.mappers.PriceMapper;
 import kg.megacom.natv.models.dtos.PricesDto;
 import kg.megacom.natv.repositories.PricesRepository;
 import kg.megacom.natv.services.PriceService;
+import kg.megacom.natv.utils.ResourceBundle;
+import kg.megacom.natv.utils.models.Language;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +25,7 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public PricesDto findById(Long id, int lang) {
-        return mapper.toDto(repository.findById(id).orElseThrow(()->new RuntimeException("sfdsdffsdsdf")));
+        return mapper.toDto(repository.findById(id).orElseThrow(()->new EntityNotFoundExc(ResourceBundle.periodMessages(Language.getLang(lang), "channelNotFound"))));
     }
 
     @Override

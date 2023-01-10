@@ -25,17 +25,6 @@ public class OrdersController {
     @Autowired
     private ModelMapper modelMapper;
 
-    @PostMapping("/save")
-    @ApiOperation("Сохранить заявку")
-    public ResponseEntity<?> save(@RequestBody OrdersDto dto){
-        try {
-            return ResponseEntity.ok(service.save(dto));
-        }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.I_AM_A_TEAPOT);
-        }
-    }
-
-
     @GetMapping("/get/{id}")
     @ApiOperation("Поиск заявки по id")
     public ResponseEntity<?> findById(@PathVariable Long id, @RequestHeader int lang){
@@ -53,10 +42,4 @@ public class OrdersController {
             return ResponseEntity.ok(service.saveOrder(orderRequest, lang));
     }
 
-    @GetMapping("get/order")
-    @ApiOperation("Вывести заявку")
-    public ResponseEntity<?>getOrder(@RequestBody OrderReq orderReq, int lang){
-
-            return ResponseEntity.ok(service.getOrder(orderReq, lang));
-    }
 }
